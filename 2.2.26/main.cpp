@@ -1,6 +1,5 @@
 #include "ex2.h"
 #include <iostream>
-#include <vector>
 
 int main() {
     int N, M;
@@ -18,13 +17,21 @@ int main() {
         return 1;
     }
 
-    std::vector<std::vector<int>> matrix(N, std::vector<int>(M));
+    int** matrix = new int*[N];
+    for (int i = 0; i < N; ++i) {
+        matrix[i] = new int[M];
+    }
+
     std::cout << "Введите элементы матрицы (0 или 1):" << std::endl;
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < M; ++j) {
             std::cin >> matrix[i][j];
             if (matrix[i][j] != 0 && matrix[i][j] != 1) {
                 std::cerr << "Элементы матрицы должны быть 0 или 1." << std::endl;
+                for (int k = 0; k <= i; k++) {
+                    delete[] matrix[k];
+                }
+                delete[] matrix;
                 return 1;
             }
         }
@@ -37,6 +44,11 @@ int main() {
 
     std::cout << "Преобразованная матрица:" << std::endl;
     printMatrix(matrix, N, M);
+
+    for (int i = 0; i < N; ++i) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
 
     return 0;
 }
